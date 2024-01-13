@@ -47,11 +47,27 @@ app.post('/api/v1/tours/', (req, res) => {
       res.status(201).json({
         status: 'success',
         body: {
-          tours: newTours,
+          tour: newTours,
         },
       });
     }
   );
+});
+
+app.patch('/api/v1/tours/:id', (req, res) => {
+  if (req.params.id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'Fail',
+      message: 'Invalid Id',
+    });
+  }
+
+  res.status(200).json({
+    status: 'success',
+    body: {
+      tour: 'Updated tour!',
+    },
+  });
 });
 
 const port = 5000;
