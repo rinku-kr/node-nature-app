@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 
-const tourControllers = require('../controllers/tourControllers');
+const tourControllers = require('../controllers/tourController');
 
 const router = express.Router();
 

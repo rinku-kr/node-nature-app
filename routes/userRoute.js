@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const userControllers = require('../controllers/userControllers');
+const userControllers = require('../controllers/userController');
 
 router
   .route('/')
