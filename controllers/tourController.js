@@ -44,7 +44,7 @@ class ApiFeatures {
     this.query = this.query.skip(skip).limit(limit);
     return this;
   }
-};
+}
 
 exports.aliasTopTours = (req, res, next) => {
   req.query.limit = '5';
@@ -145,6 +145,41 @@ exports.deleteTour = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       status: 'Something fail!',
+      message: 'Something went wrong!',
+    });
+  }
+};
+
+exports.getTourStats = async (req, res) => {
+  try {
+    const stats = await Tour.aggregate([
+      {
+        $match: { ratingsAverage: { $gte: 4.5 } },
+      },
+      {
+        $group: {
+          _id: { $toUpper: '$difficulty' },
+          numTours: { $sum: 1 },
+          numRatings: { $sum: '$ratingsQuantity' },
+          avgRating: { $avg: '$ratingsAverage' },
+          avgPrice: { $avg: '$price' },
+          minPrice: { $min: '$price' },
+          maxPrice: { $max: '$price' },
+        },
+      },
+      {
+        $sort: { avgPrice: 1 },
+      },
+    ]);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        stats,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'Fail!',
       message: 'Something went wrong!',
     });
   }
