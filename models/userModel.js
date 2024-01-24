@@ -13,15 +13,16 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please provide your email'],
     validate: [validator.isEmail, 'Please provide a valid email'],
   },
-  pasword: {
+  password: {
     type: String,
     required: [true, 'Please provide a password'],
     minLength: 8,
   },
-  confirmPasword: {
+  confirmPassword: {
     type: String,
     required: [true, 'Please confirm your password'],
   },
+  photo: String,
 });
 
 const User = mongoose.model('User', userSchema);
