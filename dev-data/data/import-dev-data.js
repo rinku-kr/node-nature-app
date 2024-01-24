@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 const Tour = require('../../models/tourModel');
+
 dotenv.config({ path: './config.env' });
 
 const DB = process.env.DATABASE.replace(
@@ -14,17 +15,19 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true,
+    // useUnifiedTopology: true,
     useFindAndModify: false,
   })
   .then(() => {
     console.log('DB connection is successfully!');
   });
 
+  // Read json file!
 const tours = JSON.parse(
   fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
 );
 
+// Import data info!
 const importData = async () => {
   try {
     await Tour.create(tours);
@@ -35,6 +38,7 @@ const importData = async () => {
   process.exit();
 };
 
+// Delete all data from DB
 const deleteData = async () => {
   try {
     await Tour.deleteMany();

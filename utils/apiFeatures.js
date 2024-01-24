@@ -1,4 +1,4 @@
-  class ApiFeatures {
+class ApiFeatures {
   constructor(query, queryString) {
     this.query = query;
     this.queryString = queryString;
@@ -6,15 +6,17 @@
 
   filter() {
     const queryObj = { ...this.queryString };
-    const excludefields = ['page', 'sort', 'limit', 'fields'];
-    excludefields.forEach((el) => delete queryObj[el]);
+    const excludedfields = ['page', 'sort', 'limit', 'fields'];
+    excludedfields.forEach((el) => delete queryObj[el]);
 
+    // 1B) Advanced filtering
     let queryStr = JSON.stringify(queryObj);
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
 
     this.query = Tour.find(JSON.parse(queryStr));
     return this;
   }
+  
   sort() {
     if (this.queryString.sort) {
       const sortBy = this.queryString.sort.split(',').join(' ');
@@ -41,6 +43,6 @@
     this.query = this.query.skip(skip).limit(limit);
     return this;
   }
-};
+}
 
 module.exports = ApiFeatures;
